@@ -1,20 +1,10 @@
-import { COLORS }            from "../../constants";
+import { COLORS }            from "../../constants"; 
 import { useForgotPassword } from "../../hooks/useAuthForm";
 import StyledInput           from "./StyledInput";
 import ModalShell            from "../chat/settings/ModalShell";
+import Button                from "../ui/button";
 
 const G = COLORS.green;
-
-const BTN_STYLE = {
-  display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-  width: "100%", padding: "12px 22px",
-  background: "rgba(127,216,50,0.05)",
-  border: "1px solid rgba(127,216,50,0.3)",
-  borderRadius: "8px",
-  color: G, fontSize: "0.68rem", letterSpacing: "0.22em",
-  fontFamily: "'DM Mono', monospace", fontWeight: 600,
-  transition: "all 0.2s", textTransform: "uppercase",
-};
 
 export default function ForgotPasswordModal({ onClose }) {
   const { email, setEmail, sent, loading, error, handleReset } = useForgotPassword();
@@ -42,15 +32,14 @@ export default function ForgotPasswordModal({ onClose }) {
             value={email} onChange={e => setEmail(e.target.value)}
             placeholder="analyst@socilis.com"
           />
-          <button
-            onClick={handleReset} disabled={loading}
-            style={{ ...BTN_STYLE, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.6 : 1 }}
-            onMouseEnter={e => { if (!loading) { e.currentTarget.style.background = "rgba(127,216,50,0.1)"; e.currentTarget.style.borderColor = "rgba(127,216,50,0.5)"; } }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(127,216,50,0.05)"; e.currentTarget.style.borderColor = "rgba(127,216,50,0.3)"; }}
-          >
-            {loading ? "ENVOI..." : "ENVOYER LA DEMANDE"}
-          </button>
-          {error && <div style={{ marginTop: "10px", color: "#ff8080", fontFamily: "'DM Mono', monospace", fontSize: "0.72rem" }}>⚠ {error}</div>}
+          <Button variant="green" onClick={handleReset} loading={loading}>
+            ENVOYER LA DEMANDE
+          </Button>
+          {error && (
+            <div style={{ marginTop: "10px", color: "#ff8080", fontFamily: "'DM Mono', monospace", fontSize: "0.72rem" }}>
+              ⚠ {error}
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -58,12 +47,9 @@ export default function ForgotPasswordModal({ onClose }) {
             <span style={{ color: G }}>✓</span>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.75rem", color: G }}>Email envoyé avec succès</span>
           </div>
-          <button
-            onClick={onClose}
-            style={{ ...BTN_STYLE, cursor: "pointer" }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(127,216,50,0.1)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(127,216,50,0.05)"; }}
-          >FERMER</button>
+          <Button variant="green" onClick={onClose}>
+            FERMER
+          </Button>
         </>
       )}
     </ModalShell>

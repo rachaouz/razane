@@ -1,4 +1,4 @@
-export default function Button({ children, onClick, variant = "hero", disabled }) {
+export default function Button({ children, onClick, variant = "hero", disabled, loading }) {
 
   /* ── Login (nav) ── */
   if (variant === "login") {
@@ -42,6 +42,36 @@ export default function Button({ children, onClick, variant = "hero", disabled }
         onMouseLeave={e => { e.currentTarget.style.background="rgba(0,212,255,0.08)"; e.currentTarget.style.boxShadow="0 0 16px rgba(0,212,255,0.22)"; }}
       >
         {children}
+      </button>
+    );
+  }
+
+  /* ── Green (modals avec accent vert) ── */
+  if (variant === "green") {
+    return (
+      <button
+        onClick={onClick}
+        disabled={disabled || loading}
+        style={{
+          display:"flex", alignItems:"center", justifyContent:"center", gap:"8px",
+          width:"100%",
+          padding:"12px 22px",
+          background:"rgba(127,216,50,0.05)",
+          border:"1px solid rgba(127,216,50,0.3)",
+          borderRadius:"8px",
+          color:"#7fd832",
+          fontSize:"0.68rem", letterSpacing:"0.22em",
+          fontFamily:"'DM Mono', monospace",
+          fontWeight:600,
+          textTransform:"uppercase",
+          cursor: (disabled || loading) ? "not-allowed" : "pointer",
+          opacity: (disabled || loading) ? 0.6 : 1,
+          transition:"all 0.2s",
+        }}
+        onMouseEnter={e => { if (!disabled && !loading) { e.currentTarget.style.background="rgba(127,216,50,0.1)"; e.currentTarget.style.borderColor="rgba(127,216,50,0.5)"; }}}
+        onMouseLeave={e => { e.currentTarget.style.background="rgba(127,216,50,0.05)"; e.currentTarget.style.borderColor="rgba(127,216,50,0.3)"; }}
+      >
+        {loading ? "ENVOI..." : children}
       </button>
     );
   }

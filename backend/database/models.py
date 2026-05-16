@@ -73,7 +73,6 @@ class IOC(Base):
 
     value = Column(String(512), nullable=False, index=True)
     type = Column(String(50), nullable=False, index=True)
-
     final_verdict = Column(String(50))
     risk_score = Column(Integer)
     confidence = Column(Float)
@@ -133,6 +132,7 @@ class ScanHistory(Base):
     indicator = Column(String(512), index=True)
     ioc_type = Column(String(50))
 
+    risk_level = Column(String(50), nullable=True)
     final_verdict = Column(String(50))
     risk_score = Column(Integer)
 

@@ -23,7 +23,6 @@ from routers.chatbot_router  import router as chatbot_router
 from middlewares.rate_limit    import rate_limit_middleware
 from middlewares.activity_log  import activity_log_middleware
 from database.db               import init_db
-
 app = FastAPI(
     title="Threat Intelligence Platform",
     description="Plateforme TI — IOC enrichment + Chatbot IA",
