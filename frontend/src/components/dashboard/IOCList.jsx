@@ -1,4 +1,4 @@
-import FilterBar from "./FilterBar";
+import FilterBar from "./Filterbar";
 import IOCRow    from "./IOCRow";
 
 /**

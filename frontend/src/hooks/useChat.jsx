@@ -1,8 +1,12 @@
-import { useState, useRef, useEffect } from "react";
-import { chatbotApi }                  from "../api";
-import { stripIOCPrefix }              from "../utils/iocDetector";
-import { getTime }                     from "../utils/formatUtils";
-import { buildReport }                 from "../utils/reportUtils";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { chatbotApi }       from "../api";
+import { stripIOCPrefix }   from "../utils/iocDetector";
+import { getTime }          from "../utils/formatUtils";
+import { buildReport }      from "../utils/reportUtils";
+
+// Compteur global stable — évite les collisions Date.now() en React StrictMode
+let _msgId = 1;
+const nextId = () => ++_msgId;
 
 function makeInitMsg() {
   return {
@@ -23,21 +27,21 @@ export function useChat(selectedModel) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSelectIOC = (type) => {
+  const handleSelectIOC = useCallback((type) => {
     setActiveIOC(type);
     setInput(prev => type
       ? `[${type}] ${stripIOCPrefix(prev)}`
       : stripIOCPrefix(prev)
     );
-  };
+  }, []);
 
-  const sendMessage = async () => {
+  const sendMessage = useCallback(async () => {
     const raw = input.trim();
     if (!raw || loading) return;
 
     setInput("");
     setMessages(prev => [...prev, {
-      id: Date.now(), role: "user",
+      id: nextId(), role: "user",
       content: raw, timestamp: getTime(),
     }]);
     setLoading(true);
@@ -49,13 +53,13 @@ export function useChat(selectedModel) {
 
       const botMsg = (data.type && data.type !== "question")
         ? {
-            id: Date.now() + 1, role: "bot",
+            id: nextId(), role: "bot",
             content: data.message || `Analyse terminée — ${data.type} : ${clean}`,
             timestamp: getTime(),
             report: buildReport(data, clean),
           }
         : {
-            id: Date.now() + 1, role: "bot",
+            id: nextId(), role: "bot",
             content: data.message || "Pas de réponse.",
             timestamp: getTime(),
           };
@@ -63,7 +67,7 @@ export function useChat(selectedModel) {
       setMessages(prev => [...prev, botMsg]);
     } catch (e) {
       setMessages(prev => [...prev, {
-        id: Date.now() + 1, role: "bot",
+        id: nextId(), role: "bot",
         content: `Erreur : ${e.message}`,
         timestamp: getTime(),
       }]);
@@ -71,14 +75,15 @@ export function useChat(selectedModel) {
       setLoading(false);
       setActiveIOC(null);
     }
-  };
+  }, [input, loading, selectedModel]);
 
-  const handleNewChat = () => {
+  const handleNewChat = useCallback(() => {
+    _msgId = 1;
     setMessages([makeInitMsg()]);
     setInput("");
     setActiveIOC(null);
     setLoading(false);
-  };
+  }, []);
 
   return {
     messages,

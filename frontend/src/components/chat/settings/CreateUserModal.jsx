@@ -16,8 +16,8 @@ export default function CreateUserModal({ darkMode, onClose }) {
         <div style={successMsg}>✓ Utilisateur créé avec succès</div>
       ) : (
         <>
-          <Field label="NOM COMPLET"   darkMode={darkMode} value={form.name}     onChange={set("name")}     placeholder="Ex: Ahmed Benali"    error={errors.name} />
-          <Field label="PSEUDO"        darkMode={darkMode} value={form.pseudo}   onChange={set("pseudo")}   placeholder="Ex: a.benali"        error={errors.pseudo} />
+          <Field label="NOM COMPLET"   darkMode={darkMode} value={form.name}     onChange={set("name")}     placeholder="Ex: Racha OUZNADJI"    error={errors.name} />
+          <Field label="PSEUDO"        darkMode={darkMode} value={form.pseudo}   onChange={set("pseudo")}   placeholder="Ex: nouryams"        error={errors.pseudo} />
           <Field label="EMAIL"         darkMode={darkMode} value={form.email}    onChange={set("email")}    placeholder="analyst@mobilis.dz"  error={errors.email} type="email" />
           <Field label="MOT DE PASSE"  darkMode={darkMode} value={form.password} onChange={set("password")} placeholder="••••••••"            error={errors.password} type="password" />
 

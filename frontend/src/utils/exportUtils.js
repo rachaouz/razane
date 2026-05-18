@@ -1,15 +1,5 @@
-/**
- * Utilitaires d'export local (côté client, depuis un objet `report`).
- * Extraits de MessageBubble.jsx où ils étaient définis inline.
- *
- * À ne pas confondre avec api/export.js qui appelle le backend.
- * Ces fonctions construisent et téléchargent le fichier depuis les données
- * déjà présentes dans le rapport affiché dans le chat.
- */
-
 import { THREAT_META, IOC_TYPE_META, scoreColor } from "../constants";
 
-/** Télécharge le rapport en CSV. */
 export function dlCSV(report) {
   const rows = [
     ["Champ", "Valeur"],
@@ -20,37 +10,37 @@ export function dlCSV(report) {
     ["Niveau menace", report.threat_level || ""],
     ["Tags", (report.tags || []).join(", ")],
     ["Message", (report.message || "").replace(/"/g, "'")],
-    ...(report.isp         ? [["ISP", report.isp]] : []),
-    ...(report.asn         ? [["ASN", report.asn]] : []),
-    ...(report.country     ? [["Pays", report.country]] : []),
-    ...(report.vt_malicious  != null ? [["VT Malicious", report.vt_malicious]] : []),
+    ...(report.isp           ? [["ISP", report.isp]] : []),
+    ...(report.asn           ? [["ASN", report.asn]] : []),
+    ...(report.country       ? [["Pays", report.country]] : []),
+    ...(report.vt_malicious  != null ? [["VT Malicious",  report.vt_malicious]]  : []),
     ...(report.vt_suspicious != null ? [["VT Suspicious", report.vt_suspicious]] : []),
     ...(report.vt_reputation != null ? [["VT Réputation", report.vt_reputation]] : []),
-    ...(report.vt_tags?.length       ? [["VT Tags", report.vt_tags.join(", ")]] : []),
-    ...(report.abuseipdb   != null ? [["AbuseIPDB Score", report.abuseipdb]] : []),
-    ...(report.otx_pulses  != null ? [["OTX Pulses", report.otx_pulses]] : []),
-    ...(report.file_type   ? [["Type Fichier", report.file_type]] : []),
-    ...(report.first_seen  ? [["Premier vu", report.first_seen]] : []),
+    ...(report.vt_tags?.length       ? [["VT Tags", report.vt_tags.join(", ")]]  : []),
+    ...(report.abuseipdb     != null ? [["AbuseIPDB Score", report.abuseipdb]]   : []),
+    ...(report.otx_pulses    != null ? [["OTX Pulses",    report.otx_pulses]]    : []),
+    ...(report.file_type     ? [["Type Fichier",   report.file_type]]   : []),
+    ...(report.first_seen    ? [["Premier vu",     report.first_seen]]  : []),
     ...(report.vt_undetected != null ? [["VT Undetected", report.vt_undetected]] : []),
-    ...(report.registrar   ? [["Registrar", report.registrar]] : []),
-    ...(report.created     ? [["Créé le", report.created]] : []),
+    ...(report.registrar     ? [["Registrar",      report.registrar]]   : []),
+    ...(report.created       ? [["Créé le",        report.created]]     : []),
     ...(report.subdomains_count != null ? [["Sous-domaines", report.subdomains_count]] : []),
-    ...(report.domain      ? [["Domaine", report.domain]] : []),
-    ...(report.ip          ? [["IP", report.ip]] : []),
+    ...(report.domain        ? [["Domaine",        report.domain]]      : []),
+    ...(report.ip            ? [["IP",             report.ip]]          : []),
     ...(report.hosting_platform ? [["Plateforme hosting", report.hosting_platform]] : []),
     ...((report.phishing_signals || []).map((s, i) => [`Signal phishing ${i + 1}`, s])),
-    ...(report.gsb_threats ? [["Google Safe Browsing", report.gsb_threats.join(", ")]] : []),
-    ...(report.phishtank   ? [["PhishTank", report.phishtank]] : []),
-    ...(report.mail_domain ? [["Mail Domain", report.mail_domain]] : []),
-    ...(report.provider    ? [["Provider", report.provider]] : []),
-    ...(report.mx          ? [["MX", report.mx]] : []),
-    ...(report.spf         ? [["SPF", report.spf]] : []),
-    ...(report.dmarc       ? [["DMARC", report.dmarc]] : []),
-    ...(report.severity    ? [["Sévérité", report.severity]] : []),
-    ...(report.cvss_score  != null ? [["CVSS Score", report.cvss_score]] : []),
-    ...(report.cvss_vector ? [["CVSS Vector", report.cvss_vector]] : []),
-    ...(report.cwe         ? [["CWE", report.cwe.join(", ")]] : []),
-    ...(report.published   ? [["Publié le", report.published]] : []),
+    ...(report.gsb_threats   ? [["Google Safe Browsing", report.gsb_threats.join(", ")]] : []),
+    ...(report.phishtank     ? [["PhishTank",      report.phishtank]]   : []),
+    ...(report.mail_domain   ? [["Mail Domain",    report.mail_domain]] : []),
+    ...(report.provider      ? [["Provider",       report.provider]]    : []),
+    ...(report.mx            ? [["MX",             report.mx]]          : []),
+    ...(report.spf           ? [["SPF",            report.spf]]         : []),
+    ...(report.dmarc         ? [["DMARC",          report.dmarc]]       : []),
+    ...(report.severity      ? [["Sévérité",       report.severity]]    : []),
+    ...(report.cvss_score    != null ? [["CVSS Score",  report.cvss_score]]  : []),
+    ...(report.cvss_vector   ? [["CVSS Vector",    report.cvss_vector]] : []),
+    ...(report.cwe           ? [["CWE",            report.cwe.join(", ")]] : []),
+    ...(report.published     ? [["Publié le",      report.published]]   : []),
     ...((report.associated_domains || []).map((d, i) => [`Domaine associé ${i + 1}`, d])),
     ...((report.associated_files   || []).map((f, i) => [`Fichier associé ${i + 1}`, f])),
     ...((report.alerts             || []).map((a, i) => [`Alerte ${i + 1}`, a])),
@@ -60,28 +50,19 @@ export function dlCSV(report) {
   _download(new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" }), `socilis_${_slug(report.ioc)}.csv`);
 }
 
-/** Télécharge le rapport en JSON. */
 export function dlJSON(report) {
-  _download(new Blob([JSON.stringify(report, null, 2)], { type: "application/json" }), `socilis_${_slug(report.ioc)}.json`);
+  _download(
+    new Blob([JSON.stringify(report, null, 2)], { type: "application/json" }),
+    `socilis_${_slug(report.ioc)}.json`
+  );
 }
 
-/**
- * Génère et télécharge un rapport PDF HTML.
- * Utilise THREAT_META et IOC_TYPE_META depuis constants.js
- * au lieu de les redéfinir localement.
- */
 export function dlPDF(report) {
   const now     = new Date().toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
   const sc      = report.score || 0;
   const scColor = scoreColor(sc);
   const tm      = THREAT_META[report.threat_level] || THREAT_META[report.verdict] || THREAT_META.medium;
   const tyM     = IOC_TYPE_META[report.type] || { color: "#00a8ff", symbol: "◆" };
-
-  const row = (label, value, color) =>
-    `<div style="display:flex;gap:0;margin-bottom:7px;border-bottom:1px solid rgba(0,168,255,0.06);padding-bottom:7px">
-      <span style="min-width:160px;font-size:9px;letter-spacing:1.5px;color:rgba(160,210,255,0.35)">${label}</span>
-      <span style="font-size:10px;color:${color || "#e2f0ff"};word-break:break-all">${value}</span>
-    </div>`;
 
   const section = (title, content) =>
     `<div style="margin-bottom:20px">
@@ -144,9 +125,13 @@ function _slug(str) {
 }
 
 function _download(blob, filename) {
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
+  const url = URL.createObjectURL(blob);
+  const a   = document.createElement("a");
+  a.href     = url;
   a.download = filename;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(a.href);
+  document.body.removeChild(a);
+  // Délai court pour laisser le navigateur initier le téléchargement avant libération
+  setTimeout(() => URL.revokeObjectURL(url), 100);
 }

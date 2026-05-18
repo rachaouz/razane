@@ -1,4 +1,4 @@
-import Button from "../ui/Button";
+import Button from "../ui/button";
 
 /**
  * Panneau flottant (coin bas-droite) listant les demandes de reset en attente.

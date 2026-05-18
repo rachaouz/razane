@@ -30,7 +30,7 @@ export default function ForgotPasswordModal({ onClose }) {
             value={email} onChange={e => setEmail(e.target.value)}
             placeholder="analyst@socilis.com"
           />
-          <Button variant="green" onClick={handleReset} loading={loading}>
+          <Button  className="flex justify-center" variant="green" onClick={handleReset} loading={loading}>
             ENVOYER LA DEMANDE
           </Button>
           {error && (

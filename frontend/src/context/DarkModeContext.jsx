@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 
 const STORAGE_KEY = "socilis_dark_mode";
 
@@ -10,12 +10,13 @@ export function DarkModeProvider({ children }) {
     return saved !== null ? saved === "true" : true;
   });
 
-  const setDarkMode = (value) => {
+  const setDarkMode = useCallback((value) => {
     setDarkModeState(value);
     localStorage.setItem(STORAGE_KEY, String(value));
-  };
+  }, []);
 
-  const toggle = () => setDarkMode(!darkMode);
+  // "prev =>" : lit la valeur ACTUELLE au moment du clic, pas une valeur figée
+  const toggle = useCallback(() => setDarkMode(prev => !prev), [setDarkMode]);
 
   return (
     <DarkModeContext.Provider value={{ darkMode, setDarkMode, toggle }}>
@@ -25,5 +26,7 @@ export function DarkModeProvider({ children }) {
 }
 
 export function useDarkMode() {
-  return useContext(DarkModeContext);
+  const ctx = useContext(DarkModeContext);
+  if (!ctx) throw new Error("useDarkMode must be used inside <DarkModeProvider>");
+  return ctx;
 }

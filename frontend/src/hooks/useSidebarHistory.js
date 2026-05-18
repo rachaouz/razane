@@ -1,20 +1,12 @@
-import { useState, useEffect } from "react";
-import { historyApi }          from "../api/history";
+import { useState, useEffect, useCallback } from "react";
+import { historyApi }             from "../api/history";
 import { formatDate, capitalize } from "../utils/formatUtils";
 
-/**
- * Gère le chargement et la suppression de l'historique dans la sidebar.
- *
- * Toute cette logique était inline dans ChatSidebar.jsx,
- * qui se retrouvait à mélanger fetch, state, formatage et rendu.
- *
- * @param {boolean} open - La sidebar est-elle ouverte ? (déclenche le chargement)
- */
 export function useSidebarHistory(open) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const loadHistory = () => {
+  const loadHistory = useCallback(() => {
     setLoading(true);
     historyApi
       .get({ limit: 50 })
@@ -30,13 +22,12 @@ export function useSidebarHistory(open) {
       })
       .catch(() => setHistory([]))
       .finally(() => setLoading(false));
-  };
+  }, []);
 
-  // Recharge l'historique à chaque ouverture de la sidebar
   useEffect(() => {
     if (!open) return;
     loadHistory();
-  }, [open]);
+  }, [open, loadHistory]);
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();

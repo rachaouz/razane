@@ -1,4 +1,3 @@
-// useUserForm.js — logique de formulaire et validation
 import { useState } from "react";
 import { authApi } from "../../../api/auth";
 
@@ -24,6 +23,7 @@ export function useCreateForm(onDone) {
   const submit = async () => {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
+    setErrors({}); // reset erreurs avant envoi
 
     try {
       await authApi.createUser(form.email, form.password);
@@ -39,12 +39,13 @@ export function useCreateForm(onDone) {
 
 // ─── Hook : suppression d'utilisateur (2 étapes) ────────────────────────────
 export function useDeleteForm(onDone) {
-  const [email, setEmail]     = useState("");
-  const [pseudo, setPseudo]   = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [step, setStep]       = useState(1);
-  const [error, setError]     = useState("");
-  const [success, setSuccess] = useState(false);
+  const [email,      setEmail]      = useState("");
+  const [pseudo,     setPseudo]     = useState("");
+  const [confirm,    setConfirm]    = useState("");
+  const [step,       setStep]       = useState(1);
+  const [error,      setError]      = useState("");
+  const [success,    setSuccess]    = useState(false);
+  const [submitting, setSubmitting] = useState(false); // ← verrou anti double-clic
 
   const nextStep = () => {
     if (!pseudo.trim())        { setError("Pseudo requis"); return; }
@@ -56,6 +57,8 @@ export function useDeleteForm(onDone) {
 
   const submit = async () => {
     if (confirm !== "SUPPRIMER") { setError('Tapez exactement "SUPPRIMER"'); return; }
+    if (submitting) return; // bloque le double-clic
+    setSubmitting(true);
 
     try {
       const users = await authApi.listUsers();
@@ -69,8 +72,10 @@ export function useDeleteForm(onDone) {
       setTimeout(onDone, 1400);
     } catch (err) {
       setError(err.message || "Erreur lors de la suppression");
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  return { email, setEmail, pseudo, setPseudo, confirm, setConfirm, step, error, setError, success, nextStep, back, submit };
+  return { email, setEmail, pseudo, setPseudo, confirm, setConfirm, step, error, setError, success, submitting, nextStep, back, submit };
 }

@@ -1,16 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { historyApi, statsApi } from "../api";
 
-/**
- * Récupère l'historique des scans + les statistiques globales.
- * Retourne loading, scans, stats, et une fonction reload.
- */
 export function useDashboardData() {
   const [scans,   setScans]   = useState([]);
   const [stats,   setStats]   = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     try {
       const [histRes, statsRes] = await Promise.all([
@@ -24,9 +20,9 @@ export function useDashboardData() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [load]);
 
   return { loading, scans, stats, reload: load };
 }

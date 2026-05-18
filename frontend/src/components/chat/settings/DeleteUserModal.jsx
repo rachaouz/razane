@@ -1,10 +1,13 @@
-// DeleteUserModal.jsx
 import { btn, inputField, fieldLabel, errorText, successMsg } from "./styles";
 import ModalShell from "./ModalShell";
 import { useDeleteForm } from "./useUserForm";
 
 export default function DeleteUserModal({ darkMode, onClose }) {
-  const { email, setEmail, pseudo, setPseudo, confirm, setConfirm, step, error, setError, success, nextStep, back, submit } = useDeleteForm(onClose);
+  const {
+    email, setEmail, pseudo, setPseudo,
+    confirm, setConfirm, step, error, setError,
+    success, submitting, nextStep, back, submit,
+  } = useDeleteForm(onClose);
 
   const inp = { ...inputField(darkMode, !!error), color: darkMode ? "#e2f0ff" : "#0a1628" };
 
@@ -23,13 +26,18 @@ export default function DeleteUserModal({ darkMode, onClose }) {
           </p>
           <div style={{ marginBottom: "12px" }}>
             <label style={fieldLabel}>PSEUDO DE L'UTILISATEUR</label>
-            <input style={{ ...inputField(darkMode, false), color: darkMode ? "#e2f0ff" : "#0a1628" }} type="text" value={pseudo} placeholder="Ex: a.benali"
-              onChange={e => { setPseudo(e.target.value); setError(""); }} />
+            <input
+              style={{ ...inputField(darkMode, false), color: darkMode ? "#e2f0ff" : "#0a1628" }}
+              type="text" value={pseudo} placeholder="Ex: nouryams"
+              onChange={e => { setPseudo(e.target.value); setError(""); }}
+            />
           </div>
           <div style={{ marginBottom: "12px" }}>
             <label style={fieldLabel}>EMAIL DE L'UTILISATEUR</label>
-            <input style={inp} type="email" value={email} placeholder="utilisateur@mobilis.dz"
-              onChange={e => { setEmail(e.target.value); setError(""); }} />
+            <input
+              style={inp} type="email" value={email} placeholder="utilisateur@mobilis.dz"
+              onChange={e => { setEmail(e.target.value); setError(""); }}
+            />
           </div>
           {error && <div style={errorText}>{error}</div>}
           <div style={{ display: "flex", gap: "8px" }}>
@@ -48,13 +56,31 @@ export default function DeleteUserModal({ darkMode, onClose }) {
             Pour confirmer, tapez <strong style={{ color: "#f87171" }}>SUPPRIMER</strong> ci-dessous :
           </p>
           <div style={{ marginBottom: "12px" }}>
-            <input style={inp} value={confirm} placeholder="SUPPRIMER"
-              onChange={e => { setConfirm(e.target.value); setError(""); }} />
+            <input
+              style={inp} value={confirm} placeholder="SUPPRIMER"
+              onChange={e => { setConfirm(e.target.value); setError(""); }}
+            />
             {error && <div style={errorText}>{error}</div>}
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
-            <button onClick={back}   style={btn("transparent", "1px solid rgba(0,168,255,0.2)", "rgba(160,210,255,0.55)")}>← RETOUR</button>
-            <button onClick={submit} style={btn("rgba(239,68,68,0.15)", "1px solid rgba(239,68,68,0.45)", "#f87171")}>SUPPRIMER</button>
+            <button
+              onClick={back}
+              disabled={submitting}
+              style={btn("transparent", "1px solid rgba(0,168,255,0.2)", "rgba(160,210,255,0.55)")}
+            >
+              ← RETOUR
+            </button>
+            <button
+              onClick={submit}
+              disabled={submitting}
+              style={{
+                ...btn("rgba(239,68,68,0.15)", "1px solid rgba(239,68,68,0.45)", "#f87171"),
+                opacity: submitting ? 0.6 : 1,
+                cursor:  submitting ? "not-allowed" : "pointer",
+              }}
+            >
+              {submitting ? "..." : "SUPPRIMER"}
+            </button>
           </div>
         </>
       )}
