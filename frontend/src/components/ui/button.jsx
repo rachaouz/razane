@@ -69,20 +69,17 @@ export default function Button({
       hover:translate-x-1
     `,
 
-    submit: `
-     flex items-center justify-center
-     w-full max-w-[480px]   /* largeur plus grande */
-     block mx-auto           /* centré horizontalement */
-     mt-8                    /* espace au-dessus pour le placer en bas */
-     px-10 py-3.5            /* padding plus généreux */
-     bg-[rgba(0,212,255,0.08)]
-     border border-[#00d4ff]
-     text-[#00d4ff]
-     rounded-full
-    text-[0.85rem] tracking-[0.22em] font-mono font-bold
-    shadow-[0_0_16px_rgba(0,212,255,0.22)]
-    hover:bg-[rgba(0,212,255,0.18)]
-    hover:shadow-[0_0_28px_rgba(0,212,255,0.4)]
+  submit: `
+  w-full
+  px-10 py-3.5
+  bg-[rgba(0,212,255,0.08)]
+  border border-[#00d4ff]
+  text-[#00d4ff]
+  rounded-full
+  text-[0.85rem] tracking-[0.22em] font-mono font-bold
+  shadow-[0_0_16px_rgba(0,212,255,0.22)]
+  hover:bg-[rgba(0,212,255,0.18)]
+  hover:shadow-[0_0_28px_rgba(0,212,255,0.4)]
 `,
 
     

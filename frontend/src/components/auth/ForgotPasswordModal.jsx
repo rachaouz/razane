@@ -30,7 +30,7 @@ export default function ForgotPasswordModal({ onClose }) {
             value={email} onChange={e => setEmail(e.target.value)}
             placeholder="analyst@socilis.com"
           />
-          <Button  className="flex justify-center" variant="green" onClick={handleReset} loading={loading}>
+          <Button variant="green" fullWidth onClick={handleReset} loading={loading}>
             ENVOYER LA DEMANDE
           </Button>
           {error && (
@@ -45,7 +45,7 @@ export default function ForgotPasswordModal({ onClose }) {
             <span style={{ color: G }}>✓</span>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.75rem", color: G }}>Email envoyé avec succès</span>
           </div>
-          <Button variant="green" onClick={onClose}>
+          <Button variant="green" fullWidth onClick={onClose}>
             FERMER
           </Button>
         </>

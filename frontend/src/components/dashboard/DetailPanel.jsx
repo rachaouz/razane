@@ -68,11 +68,6 @@ export default function DetailPanel({ ioc, C }) {
       <Field C={C} label="VERDICT"        value={(ioc.final_verdict || "UNKNOWN").toUpperCase()} color={scC} />
       <Field C={C} label="DATE D'ANALYSE" value={ioc.created_at?.slice(0, 16)} />
 
-      <div style={{ marginTop: "4px" }}>
-        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", padding: "3px 10px", background: `${C.cyan}08`, border: `1px solid ${C.cyan}30`, borderRadius: "4px", color: C.cyan }}>
-          {ioc.is_favorite ? "⭐ FAVORI" : "☆ NON FAVORI"}
-        </span>
-      </div>
     </div>
   );
 }
