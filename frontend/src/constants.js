@@ -1,10 +1,8 @@
-// ─── Assets ───────────────────────────────────────────────────────────────────
+// Assets 
 export const LOGO_URL        = "/logo socilis.webp";
 export const MOBILIS_LOGO_URL = "/Mobilis_Logo.svg.png";
 
-// ─── Design tokens partagés entre toutes les pages ────────────────────────────
-// Problème corrigé : chaque fichier redéfinissait sa propre constante de couleur
-// (G, BRAND_GREEN, GREEN, etc.). Tout est centralisé ici.
+//  Design tokens partagés entre toutes les pages sans lui chaque fichier dever redefinir sa couleur la on centralise
 export const COLORS = Object.freeze({
   green:    "#7FD832",
   cyan:     "#00c8ff",
@@ -12,7 +10,7 @@ export const COLORS = Object.freeze({
   navy:     "#020d1a",
 });
 
-// ─── Navigation ───────────────────────────────────────────────────────────────
+// Navigation
 export const NAV_ITEMS = [
   { label: "ATM Mobilis",          desc: "Telecom infrastructure security" },
   { label: "Mission & Objectives", desc: "Platform strategic goals"        },
@@ -20,7 +18,7 @@ export const NAV_ITEMS = [
   { label: "Platform Overview",    desc: "Socilis capabilities"            },
 ];
 
-// ─── IOC types (partagés Dashboard + ChatTopBar + iocDetector) ───────────────
+// IOC types (partagés Dashboard + ChatTopBar + iocDetector)
 export const IOC_TYPE_META = Object.freeze({
   ip:     { color: "#22d3ee", icon: "IP",     symbol: "◈" },
   hash:   { color: "#a78bfa", icon: "HASH",   symbol: "⬡" },
@@ -30,7 +28,7 @@ export const IOC_TYPE_META = Object.freeze({
   cve:    { color: "#ef4444", icon: "CVE",    symbol: "⚠" },
 });
 
-// ─── Threat level metadata (partagé Dashboard + ThreatReport + PDF export) ───
+// Threat level metadata (partagé Dashboard + ThreatReport + PDF export)
 export const THREAT_META = Object.freeze({
   critical: { color: "#ef4444", label: "CRITIQUE", bg: "rgba(239,68,68,0.07)",  border: "rgba(239,68,68,0.25)"  },
   high:     { color: "#f97316", label: "ÉLEVÉ",    bg: "rgba(249,115,22,0.07)", border: "rgba(249,115,22,0.25)" },
@@ -40,7 +38,7 @@ export const THREAT_META = Object.freeze({
   clean:    { color: "#22c55e", label: "PROPRE",   bg: "rgba(34,197,94,0.07)",  border: "rgba(34,197,94,0.25)"  },
 });
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// Helpers
 /** Retourne la couleur d'un score de risque (0-100). */
 export function scoreColor(score) {
   if (score >= 80) return "#ef4444";

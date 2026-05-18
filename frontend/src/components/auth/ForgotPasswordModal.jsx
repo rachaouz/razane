@@ -20,9 +20,7 @@ export default function ForgotPasswordModal({ onClose }) {
       zIndex={50}
     >
       <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Mono', monospace", lineHeight: 1.6, marginBottom: "24px" }}>
-        {sent
-          ? "Demande envoyée. L'administrateur vous contactera."
-          : "Entrez votre email. L'administrateur vous enverra votre nouveau mot de passe."}
+        {sent ? "Demande envoyée. L'administrateur vous contactera." : "Entrez votre email. L'administrateur vous enverra votre nouveau mot de passe."}
       </div>
 
       {!sent ? (
